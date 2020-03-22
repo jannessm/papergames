@@ -1,0 +1,6 @@
+<app-qwixx-bar
+  *ngFor="let row of rows; let i = index"
+  [colors]="row.colors"
+  [labels]="row.labels"
+  (score)="scores[i] = $event"
+></app-qwixx-bar>

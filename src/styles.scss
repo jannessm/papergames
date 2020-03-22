@@ -1,1 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; width: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.red {
+  background: #f44;
+
+  &.marked {
+    background: #b00;
+    color: white;
+  }
+
+  &.light {
+    opacity: 0.65;
+  }
+}
+
+.yellow {
+  background: #e0e044;
+
+  &.marked {
+    background: #bb0;
+    color: white;
+  }
+
+  &.light {
+    opacity: 0.65;
+  }
+}
+
+.blue {
+  background: #88f;
+
+  &.marked {
+    background: #00f;
+    color: white;
+  }
+
+  &.light {
+    opacity: 0.65;
+  }
+}
+
+.green {
+  background: #00e044;
+
+  &.marked {
+    background: #0b0;
+    color: white;
+  }
+
+  &.light {
+    opacity: 0.65;
+  }
+}
