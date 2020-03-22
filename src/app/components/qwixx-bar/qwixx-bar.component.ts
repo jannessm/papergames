@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { QWIXX_COLOR } from 'src/app/models/qwixx/colors';
 
 const CLOSED = 99;
@@ -8,7 +8,7 @@ const CLOSED = 99;
   templateUrl: './qwixx-bar.component.html',
   styleUrls: ['./qwixx-bar.component.scss']
 })
-export class QwixxBarComponent {
+export class QwixxBarComponent implements OnInit {
 
   @Input()
   labels: string[];
@@ -25,6 +25,10 @@ export class QwixxBarComponent {
 
   constructor() { }
 
+  ngOnInit() {
+    this.score.emit(0);
+  }
+
   trigger(index: number) {
     if (!this.marked[index] && this.lastMarked !== CLOSED) {
       this.mark(index);
@@ -33,8 +37,9 @@ export class QwixxBarComponent {
     }
 
     // recalculate score
-    let numberMark = 0;
-    this.checked = this.marked.reduce((score, val) => score + val * (numberMark++));
+    let numberMark = 1;
+    this.checked = this.marked.reduce((score, val) => val ? score + numberMark++ : score || 0);
+    this.score.emit(this.checked);
   }
 
   private unmark(index: number) {

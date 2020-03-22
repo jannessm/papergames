@@ -10,7 +10,7 @@ import { QWIXX_VERS_1 } from 'src/app/models/qwixx/configs';
 export class QwixxComponent implements OnInit {
 
   rows: QwixxRowConfig[] = QWIXX_VERS_1;
-  scores: number[] = [];
+  scores: number[] = [0, 0, 0, 0, 0];
 
   constructor() { }
 

@@ -1,0 +1,39 @@
+#scoreboard {
+  margin: 0 10%;
+
+  .border {
+    border: 2px solid;
+    border-radius: 5px;
+  }
+  
+  .red-b {
+    border-color: #f44;
+  }
+  
+  .yellow-b {
+    border-color: #e0e044;
+  }
+  
+  .green-b {
+    border-color: #88f;
+  }
+  
+  .blue-b {
+    border-color: #00e044;
+  }
+
+  .blue-b {
+    border-color: #00e044;
+  }
+
+  .gray-b {
+    border-color: lightgrey;
+  }
+  
+  .score {
+    display: inline-block;
+    width: calc(80vw / 11);
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
