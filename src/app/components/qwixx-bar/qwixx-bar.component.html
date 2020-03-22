@@ -1,11 +1,9 @@
-<div id="wrapper">
-  <div
-    *ngFor="let label of labels; let i = index"
-    (click)="trigger(i)"
-    [class]="'button '+colors[i]"
-    [class.marked]="marked[i]"
-    [class.light]="!marked[i] && i <= lastMarked"
-  >
-    {{ label }}
-  </div>
-</div>
+<button
+  *ngFor="let label of labels; let i = index"
+  (click)="trigger(i)"
+  [class]="'button '+colors[i]"
+  [class.marked]="marked[i]"
+  [class.light]="!marked[i] && i <= lastMarked"
+>
+  {{ label }}
+</button>

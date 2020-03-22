@@ -1,9 +1,7 @@
-<div id="wrapper">
-  <div class="">Failed: </div>
-  <div
-    *ngFor="let _ of [0,0,0,0]; let i = index"
-    (click)="trigger(i)"
-    class="grey"
-    [class.marked]="marked[i]"
-  ></div>
-</div>
+<div>Failed: </div>
+<button
+  *ngFor="let _ of [0,0,0,0]; let i = index"
+  (click)="trigger(i)"
+  class="grey"
+  [class.marked]="marked[i]"
+></button>

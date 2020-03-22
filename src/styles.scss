@@ -1,7 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; width: 100%; }
+html, body { height: 100%; width: 100%; position: absolute; top: 0; left: 0;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+button:focus {outline:0;}
+
+.qwixx-line {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  height: (90% / 6 - 4%);
+  margin: 2% 0;
+}
 
 .red {
   background: #f44;

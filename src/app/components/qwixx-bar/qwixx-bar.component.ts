@@ -18,7 +18,7 @@ export class QwixxBarComponent implements OnInit {
   @Output()
   score = new EventEmitter<number>();
 
-  marked = Array(12).fill(false);
+  marked: boolean[] = Array(12).fill(false);
   lastMarked = -1;
 
   private checked = 0;
@@ -38,16 +38,22 @@ export class QwixxBarComponent implements OnInit {
 
     // recalculate score
     let numberMark = 1;
-    this.checked = this.marked.reduce((score, val) => val ? score + numberMark++ : score || 0);
+    this.checked = this.marked.map((val: boolean): number => val ? 1 : 0)
+      .reduce((score, val, i) => {
+        if (val === 1) {
+          numberMark++;
+        }
+        return score + val * numberMark;
+      });
     this.score.emit(this.checked);
   }
 
   private unmark(index: number) {
-    const penultimate = this.marked.reduce((penUl, marked, i) => {
-      if (marked && i !== index && i < 10) {
-        penUl = i;
+    let penultimate = -1;
+    this.marked.forEach((val, i) => {
+      if (val && i < this.lastMarked && i < 10) {
+        penultimate = i;
       }
-      return penUl || -1;
     });
 
     // normal number

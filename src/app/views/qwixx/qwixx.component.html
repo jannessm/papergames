@@ -1,22 +1,25 @@
-<app-qwixx-bar
-  *ngFor="let row of rows; let i = index"
-  [colors]="row.colors"
-  [labels]="row.labels"
-  (score)="scores[i] = $event"
-></app-qwixx-bar>
-
-<app-qwixx-failed (score)="scores[4] = $event"></app-qwixx-failed>
-
-<div id="scoreboard">
-  <div class="score red-b border">{{scores[0]}}</div>
-  <div class="score">+</div>
-  <div class="score yellow-b border">{{scores[1]}}</div>
-  <div class="score">+</div>
-  <div class="score green-b border">{{scores[2]}}</div>
-  <div class="score">+</div>
-  <div class="score blue-b border">{{scores[3]}}</div>
-  <div class="score">-</div>
-  <div class="score gray-b border">{{scores[4]}}</div>
-  <div class="score">=</div>
-  <div class="score black-b border">{{scores[0]+scores[1]+scores[2]+scores[3]-scores[4]}}</div>
+<div id="wrapper">
+  <app-qwixx-bar
+    *ngFor="let row of rows; let i = index"
+    [colors]="row.colors"
+    [labels]="row.labels"
+    (score)="scores[i] = $event"
+    class="qwixx-line"
+  ></app-qwixx-bar>
+  
+  <app-qwixx-failed (score)="scores[4] = $event" class="qwixx-line"></app-qwixx-failed>
+  
+  <div id="scoreboard" class="qwixx-line">
+    <div class="score red-b border">{{scores[0]}}</div>
+    <div class="score">+</div>
+    <div class="score yellow-b border">{{scores[1]}}</div>
+    <div class="score">+</div>
+    <div class="score green-b border">{{scores[2]}}</div>
+    <div class="score">+</div>
+    <div class="score blue-b border">{{scores[3]}}</div>
+    <div class="score">-</div>
+    <div class="score gray-b border">{{scores[4]}}</div>
+    <div class="score">=</div>
+    <div class="score black-b border">{{scores[0]+scores[1]+scores[2]+scores[3]-scores[4]}}</div>
+  </div>
 </div>
