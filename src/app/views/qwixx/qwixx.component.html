@@ -5,6 +5,8 @@
   (score)="scores[i] = $event"
 ></app-qwixx-bar>
 
+<app-qwixx-failed (score)="scores[4] = $event"></app-qwixx-failed>
+
 <div id="scoreboard">
   <div class="score red-b border">{{scores[0]}}</div>
   <div class="score">+</div>

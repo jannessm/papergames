@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { QwixxBarComponent } from './components/qwixx-bar/qwixx-bar.component';
 import { QwixxComponent } from './views/qwixx/qwixx.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { QwixxFailedComponent } from './components/qwixx-failed/qwixx-failed.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QwixxBarComponent,
-    QwixxComponent
+    QwixxComponent,
+    QwixxFailedComponent
   ],
   imports: [
     BrowserModule,

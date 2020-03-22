@@ -54,3 +54,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     opacity: 0.65;
   }
 }
+
+.grey {
+  background: lightgrey;
+
+  &.marked {
+    background: grey;
+    color: white;
+  }
+
+  &.light {
+    opacity: 0.65;
+  }
+}

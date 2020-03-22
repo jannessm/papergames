@@ -1,5 +1,5 @@
 #scoreboard {
-  margin: 0 10%;
+  margin: 0 5%;
 
   .border {
     border: 2px solid;
@@ -32,7 +32,7 @@
   
   .score {
     display: inline-block;
-    width: calc(80vw / 11);
+    width: calc(90vw / 11);
     text-align: center;
     box-sizing: border-box;
   }
