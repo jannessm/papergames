@@ -1,0 +1,92 @@
+mat-sidenav {
+  padding-top: 60px;
+}
+
+mat-sidenav-container {
+  height: 100%;
+  width: 100%;
+}
+
+#wrapper {
+  margin: 0 5%;
+  height: 100%;
+  width: 90%;
+  overflow: visible;
+}
+
+#menu {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  height: 48px;
+  z-index: 2;
+
+  #menu1, #menu2, #menu3 {
+    background: black;
+    width: 6px;
+    height: 6px;
+    margin: 5px;
+    border-radius: 50%;
+    opacity: 1;
+    transform: rotate(0) translate(0,0);
+  }
+
+  #menu1.open1 {
+    animation: open1 200ms linear forwards;
+  }
+
+  #menu2.open2 {
+    animation: open2 200ms linear forwards;
+  }
+
+  #menu3.open3 {
+    animation: open3 200ms linear forwards;
+  }
+
+  #menu1.closed1 {
+    animation: open1 200ms linear reverse backwards;
+  }
+
+  #menu2.closed2 {
+    animation: open2 200ms linear reverse backwards;
+  }
+
+  #menu3.closed3 {
+    animation: open3 200ms linear reverse backwards;
+  }
+}
+
+@keyframes open1 {
+  0% {
+    width: 6px;
+    border-radius: 50%;
+    transform: rotate(0) translate(0,0);
+  }
+  100% {
+    width: 42px;
+    border-radius: 5px;
+    transform: rotate(45deg) translate(20px, -2px);
+  }
+}
+
+@keyframes open3 {
+  0% {
+    width: 6px;
+    border-radius: 50%;
+    transform: rotate(0) translate(0,0);
+  }
+  100% {
+    width: 42px;
+    border-radius: 5px;
+    transform: rotate(-45deg) translate(18px, 4px);
+  }
+}
+
+@keyframes open2 {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -7,18 +7,27 @@ import { QwixxBarComponent } from './components/qwixx-bar/qwixx-bar.component';
 import { QwixxComponent } from './views/qwixx/qwixx.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QwixxFailedComponent } from './components/qwixx-failed/qwixx-failed.component';
+import { QwixxMenuComponent } from './components/qwixx-menu/qwixx-menu.component';
+
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSelectModule} from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
     AppComponent,
     QwixxBarComponent,
     QwixxComponent,
-    QwixxFailedComponent
+    QwixxFailedComponent,
+    QwixxMenuComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
