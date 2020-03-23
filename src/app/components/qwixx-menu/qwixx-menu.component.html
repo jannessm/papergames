@@ -1,7 +1,7 @@
 <button mat-button (click)="reset()">New Game</button>
 <mat-form-field>
   <mat-label>Layout</mat-label>
-  <mat-select>
+  <mat-select [(value)]="selectedLayout">
     <mat-option *ngFor="let layout of layouts; let i = index" [value]="layout">
       {{ layoutsLabels[i] }}
     </mat-option>
