@@ -12,6 +12,9 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class QwixxComponent implements OnDestroy {
 
+  open = false;
+  notfirstopen = false;
+
   rows: QwixxRowConfig[] = QWIXX_VERS_1;
   scores: number[] = [0, 0, 0, 0, 0];
 

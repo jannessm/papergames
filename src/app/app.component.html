@@ -1,15 +1,1 @@
-<div id="menu" (click)="sidenav.toggle(); notfirstopen = true;">
-  <div id="menu1" [class.open1]="open" [class.closed1]="!open && notfirstopen"></div>
-  <div id="menu2" [class.open2]="open" [class.closed2]="!open && notfirstopen"></div>
-  <div id="menu3" [class.open3]="open" [class.closed3]="!open && notfirstopen"></div>
-</div>
-
-<mat-sidenav-container>
-  <mat-sidenav #sidenav mode="over" position="end" [(opened)]="open">
-    <app-qwixx-menu></app-qwixx-menu>
-  </mat-sidenav>
-  
-  <mat-sidenav-content id="wrapper">
-    <app-qwixx></app-qwixx>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<router-outlet></router-outlet>
