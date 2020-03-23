@@ -1,5 +1,9 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { QWIXX_COLOR } from 'src/app/models/qwixx/colors';
+import { QwixxCookieRow } from 'src/app/models/qwixx/cookie-row';
+import { QwixxSettingsService } from 'src/app/services/qwixx-settings.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 const CLOSED = 99;
 
@@ -8,8 +12,10 @@ const CLOSED = 99;
   templateUrl: './qwixx-bar.component.html',
   styleUrls: ['./qwixx-bar.component.scss']
 })
-export class QwixxBarComponent implements OnInit {
+export class QwixxBarComponent implements OnInit, OnDestroy {
 
+  @Input()
+  cookieId: string;
   @Input()
   labels: string[];
   @Input()
@@ -22,11 +28,23 @@ export class QwixxBarComponent implements OnInit {
   lastMarked = -1;
 
   private checked = 0;
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor() { }
+  constructor(private settingsService: QwixxSettingsService) {
+    this.settingsService.newGame.pipe(takeUntil(this.ngUnsubscribe)).subscribe(layout => {
+      this.marked = Array(12).fill(false);
+      this.lastMarked = -1;
+      this.recalculateScore();
+    });
+  }
 
   ngOnInit() {
-    this.score.emit(0);
+    this.processCookie();
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   trigger(index: number) {
@@ -36,11 +54,34 @@ export class QwixxBarComponent implements OnInit {
       this.unmark(index);
     }
 
-    // recalculate score
-    let numberMark = 1;
+    const rowConfig: QwixxCookieRow = {
+      marked: this.marked,
+      lastMarked: this.lastMarked,
+      rowConfig: {
+        labels: this.labels,
+        colors: this.colors
+      }
+    };
+    this.settingsService.setCookieRow(this.cookieId, rowConfig);
+    this.recalculateScore();
+  }
+
+  private processCookie() {
+    const cookie: QwixxCookieRow = this.settingsService.cookies[this.cookieId];
+    if (cookie) {
+      this.marked = cookie.marked;
+      this.lastMarked = cookie.lastMarked;
+      this.colors = cookie.rowConfig.colors;
+      this.labels = cookie.rowConfig.labels;
+    }
+    this.recalculateScore();
+  }
+
+  private recalculateScore() {
+    let numberMark = this.marked[0] ? 1 : 0;
     this.checked = this.marked.map((val: boolean): number => val ? 1 : 0)
-      .reduce((score, val, i) => {
-        if (val === 1) {
+      .reduce((score, val) => {
+        if (val) {
           numberMark++;
         }
         return score + val * numberMark;

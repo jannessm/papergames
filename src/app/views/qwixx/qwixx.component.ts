@@ -20,6 +20,7 @@ export class QwixxComponent implements OnDestroy {
   constructor(private settings: QwixxSettingsService) {
     this.settings.newGame.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newConfig => {
       this.rows = newConfig;
+      this.scores = [0, 0, 0, 0, 0];
     });
   }
 

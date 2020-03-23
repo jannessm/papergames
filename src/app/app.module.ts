@@ -1,6 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSelectModule} from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QwixxBarComponent } from './components/qwixx-bar/qwixx-bar.component';
@@ -9,9 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QwixxFailedComponent } from './components/qwixx-failed/qwixx-failed.component';
 import { QwixxMenuComponent } from './components/qwixx-menu/qwixx-menu.component';
 
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSelectModule} from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button';
+import { QwixxSettingsService } from './services/qwixx-settings.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -27,9 +30,12 @@ import {MatButtonModule} from '@angular/material/button';
     BrowserAnimationsModule,
     MatSidenavModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
   ],
-  providers: [],
+  providers: [
+    CookieService,
+    QwixxSettingsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

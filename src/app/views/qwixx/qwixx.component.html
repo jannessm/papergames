@@ -2,6 +2,7 @@
   *ngFor="let row of rows; let i = index"
   [colors]="row.colors"
   [labels]="row.labels"
+  [cookieId]="'qwixx-row-'+i"
   (score)="scores[i] = $event"
   class="qwixx-line"
 ></app-qwixx-bar>
