@@ -7,6 +7,13 @@
   }
 }
 
+@media(orientation: landscape) {
+  #doc {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
 #doc {
   position: absolute;
   top: 0;
