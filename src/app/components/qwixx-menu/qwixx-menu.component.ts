@@ -12,7 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class QwixxMenuComponent {
 
   private cookieId = 'qwixx-menu';
-  layoutsLabels: string[] = ['classical', 'mixed colors', 'mixed numbers'];
+  layoutsLabels: string[] = ['klassisch', 'vermischte Farben', 'vermischte Nummern'];
   layouts: QwixxRowConfig[][] = [QWIXX_VERS_1, QWIXX_VERS_2, QWIXX_VERS_3];
   selectedLayout: QwixxRowConfig[] = QWIXX_VERS_1;
 
