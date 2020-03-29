@@ -1,5 +1,9 @@
 {
   "name": "papergames",
+  "author": {
+    "name": "Jannes Magnusson",
+    "email": "jannes@magnusson.berlin"
+  },
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
