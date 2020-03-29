@@ -78,15 +78,14 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
   }
 
   private recalculateScore() {
-    let numberMark = this.marked[0] ? 1 : 0;
     this.checked = this.marked.map((val: boolean): number => val ? 1 : 0)
-      .reduce((score, val) => {
-        if (val) {
-          numberMark++;
-        }
-        return score + val * numberMark;
-      });
-    this.score.emit(this.checked);
+      .reduce((checked, val) => val + checked);
+
+    let score = 0;
+    for (let i = this.checked; i > 0; i--) {
+      score += i;
+    }
+    this.score.emit(score);
   }
 
   private unmark(index: number) {
@@ -103,11 +102,11 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
       this.marked[index] = false;
 
     // closed row without checked 12
-    } else if (this.lastMarked === CLOSED && !this.marked[11]) {
+    } else if (index === 11 && this.lastMarked === CLOSED && !this.marked[11]) {
       this.lastMarked = penultimate;
 
     // closed row with checked 12
-    } else if (this.lastMarked === CLOSED) {
+    } else if (index >= 10 && this.lastMarked === CLOSED) {
       this.lastMarked = penultimate;
       this.marked[10] = false;
       this.marked[11] = false;
@@ -132,11 +131,7 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
     }
 
     // X
-    if (index === 11 && this.checked >= 5) {
-      this.lastMarked = CLOSED;
-      this.marked[index] = true;
-      this.marked[index - 1] = true;
-    } else if (index === 11) {
+    if (index === 11) {
       this.lastMarked = CLOSED;
     }
   }
