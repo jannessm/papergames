@@ -26,6 +26,7 @@
     "@angular/platform-browser": "~9.0.7",
     "@angular/platform-browser-dynamic": "~9.0.7",
     "@angular/router": "~9.0.7",
+    "@types/cannon": "^0.1.4",
     "@types/three": "^0.103.2",
     "ammo.js": "0.0.10",
     "cannon": "^0.6.2",
