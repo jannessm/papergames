@@ -17,6 +17,9 @@ export class RollDicesComponent implements AfterViewInit {
 
   dice: THREE.Group;
 
+  movementX = 0.01;
+  movementY = 0.01;
+
   constructor() { }
 
   ngAfterViewInit(): void {
@@ -26,6 +29,7 @@ export class RollDicesComponent implements AfterViewInit {
     this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 0.1, 1000 );
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas.nativeElement,
+      antialias: true,
       // alpha: true
     });
 
@@ -59,6 +63,11 @@ export class RollDicesComponent implements AfterViewInit {
 
     this.scene.add(linex, liney, linez);
 
+    const ground = new THREE.PlaneBufferGeometry( 10, 10 );
+    const gmaterial = new THREE.MeshBasicMaterial( {color: 0x222222, side: THREE.DoubleSide} );
+    const plane = new THREE.Mesh( ground, gmaterial );
+    this.scene.add( plane );
+
     this.camera.position.set(10, 10, 10);
     this.camera.lookAt(0, 0, 0);
 
@@ -68,14 +77,25 @@ export class RollDicesComponent implements AfterViewInit {
   animate() {
     requestAnimationFrame( this.animate.bind(this) );
 
-    this.dice.rotation.x += 0.01;
-    this.dice.rotation.y += 0.01;
+    if (this.camera.position.x > 10) {
+      this.movementX = -0.1;
+      this.camera.position.z = 10;
+    } else if (this.camera.position.x < -10) {
+      this.movementX = 0.1;
+      this.camera.position.z = -10;
+    }
+    this.camera.position.x = (this.camera.position.x + this.movementX);
+
+    if (this.camera.position.y > 10) {
+      this.movementY = -0.1;
+    } else if (this.camera.position.y < -10) {
+      this.movementY = 0.1;
+    }
+    this.camera.position.y = (this.camera.position.y + this.movementY);
+
+    this.camera.lookAt(0, 0, 0);
 
     this.renderer.render( this.scene, this.camera );
-  }
-
-  degToRad(deg: number): number {
-    return deg / (2 * Math.PI);
   }
 
   createDice(material: THREE.Material, x: number, y: number, z: number): THREE.Group {
@@ -89,21 +109,119 @@ export class RollDicesComponent implements AfterViewInit {
     dice.add(box);
 
     // 1
-    circle = new THREE.CircleGeometry( 0.4, 32 );
+    circle = new THREE.CircleGeometry( 0.35, 32 );
     circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.position.set(0, 0, 1.6);
+    circleMesh.position.set(0, 0, 1.51);
     dice.add(circleMesh);
 
     // 2
-    circle = new THREE.CircleGeometry( 0.4, 32 );
+    circle = new THREE.CircleGeometry( 0.35, 32 );
     circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = this.degToRad(90);
-    circleMesh.position.set(1.6, 0.6, 0.6);
+    circleMesh.rotation.y = Math.PI / 2;
+    circleMesh.position.set(1.51, 0.8, 0.8);
     dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.4, 32 );
+    circle = new THREE.CircleGeometry( 0.35, 32 );
     circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = this.degToRad(90);
-    circleMesh.position.set(1.6, -0.6, -0.6);
+    circleMesh.rotation.y = Math.PI / 2;
+    circleMesh.position.set(1.51, -0.8, -0.8);
+    dice.add(circleMesh);
+
+    // 3
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.x = 3 * Math.PI / 2;
+    circleMesh.position.set( 0.8, 1.51, 0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.x = 3 * Math.PI / 2;
+    circleMesh.position.set(-0.8, 1.51, -0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.x = 3 * Math.PI / 2;
+    circleMesh.position.set(0, 1.51, 0);
+    dice.add(circleMesh);
+
+    // 4
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.x = Math.PI / 2;
+    circleMesh.position.set( 0.8, -1.51, 0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.x = Math.PI / 2;
+    circleMesh.position.set( -0.8, -1.51, -0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.x = Math.PI / 2;
+    circleMesh.position.set( 0.8, -1.51, -0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.x = Math.PI / 2;
+    circleMesh.position.set( -0.8, -1.51, 0.8);
+    dice.add(circleMesh);
+
+    // 5
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = 3 * Math.PI / 2;
+    circleMesh.position.set(-1.51, 0.8, 0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = 3 * Math.PI / 2;
+    circleMesh.position.set(-1.51, -0.8, -0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = 3 * Math.PI / 2;
+    circleMesh.position.set(-1.51, -0.8, 0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = 3 * Math.PI / 2;
+    circleMesh.position.set(-1.51, 0.8, -0.8);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = 3 * Math.PI / 2;
+    circleMesh.position.set(-1.51, 0, 0);
+    dice.add(circleMesh);
+
+    // 6
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = Math.PI;
+    circleMesh.position.set(0.8, 0.8, -1.51);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = Math.PI;
+    circleMesh.position.set(-0.8, 0.8, -1.51);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = Math.PI;
+    circleMesh.position.set(0, 0.8, -1.51);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = Math.PI;
+    circleMesh.position.set(0.8, -0.8, -1.51);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = Math.PI;
+    circleMesh.position.set(-0.8, -0.8, -1.51);
+    dice.add(circleMesh);
+    circle = new THREE.CircleGeometry( 0.35, 32 );
+    circleMesh = new THREE.Mesh( circle, circleMaterial );
+    circleMesh.rotation.y = Math.PI;
+    circleMesh.position.set(0, -0.8, -1.51);
     dice.add(circleMesh);
 
     return dice;
