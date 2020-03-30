@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
+import {DICE_FACE, POS} from 'src/app/models/dices/orientations';
 import * as THREE from 'three';
+import {Ammo} from 'ammo.js';
 
 @Component({
   selector: 'app-roll-dices',
@@ -14,6 +16,7 @@ export class RollDicesComponent implements AfterViewInit {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer;
+  physics: Ammo;
 
   dice: THREE.Group;
 
@@ -26,16 +29,32 @@ export class RollDicesComponent implements AfterViewInit {
     const aspectRatio = this.canvas.nativeElement.width / this.canvas.nativeElement.height;
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 0.1, 1000 );
+    this.scene.background = new THREE.Color( 0x666666 );
+
+    // this.physics = new CannonPhysics();
+
+    const hemLight = new THREE.HemisphereLight();
+    hemLight.intensity = 0.35;
+    this.scene.add( hemLight );
+
+    const dirLight = new THREE.DirectionalLight();
+    dirLight.position.set( 0, 5, 5 );
+    dirLight.castShadow = true;
+    dirLight.shadow.camera.zoom = 2;
+    this.scene.add( dirLight );
+
+    this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 1000 );
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas.nativeElement,
       antialias: true,
       // alpha: true
     });
 
-    const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    this.renderer.setSize( window.innerWidth, window.innerHeight );
 
-    this.dice = this.createDice(material, 0, 0, 0);
+    const material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+
+    this.dice = this.createDice(material);
     this.scene.add( this.dice );
 
     // add coordinate system
@@ -63,12 +82,16 @@ export class RollDicesComponent implements AfterViewInit {
 
     this.scene.add(linex, liney, linez);
 
-    const ground = new THREE.PlaneBufferGeometry( 10, 10 );
-    const gmaterial = new THREE.MeshBasicMaterial( {color: 0x222222, side: THREE.DoubleSide} );
-    const plane = new THREE.Mesh( ground, gmaterial );
+    const plane = new THREE.Mesh(
+      new THREE.PlaneBufferGeometry( 5, 5 ),
+      new THREE.ShadowMaterial( { color: 0x111111 } )
+    );
+    plane.rotation.x = - Math.PI / 2;
+    plane.receiveShadow = true;
     this.scene.add( plane );
+    // this.physics.addMesh( plane );
 
-    this.camera.position.set(10, 10, 10);
+    this.camera.position.set(5, 5, 5);
     this.camera.lookAt(0, 0, 0);
 
     this.animate();
@@ -77,152 +100,85 @@ export class RollDicesComponent implements AfterViewInit {
   animate() {
     requestAnimationFrame( this.animate.bind(this) );
 
-    if (this.camera.position.x > 10) {
-      this.movementX = -0.1;
-      this.camera.position.z = 10;
-    } else if (this.camera.position.x < -10) {
-      this.movementX = 0.1;
-      this.camera.position.z = -10;
-    }
-    this.camera.position.x = (this.camera.position.x + this.movementX);
+    // if (this.camera.position.x > 10) {
+    //   this.movementX = -0.1;
+    //   this.camera.position.z = 10;
+    // } else if (this.camera.position.x < -10) {
+    //   this.movementX = 0.1;
+    //   this.camera.position.z = -10;
+    // }
+    // this.camera.position.x = (this.camera.position.x + this.movementX);
 
-    if (this.camera.position.y > 10) {
-      this.movementY = -0.1;
-    } else if (this.camera.position.y < -10) {
-      this.movementY = 0.1;
-    }
-    this.camera.position.y = (this.camera.position.y + this.movementY);
+    // if (this.camera.position.y > 10) {
+    //   this.movementY = -0.1;
+    // } else if (this.camera.position.y < -10) {
+    //   this.movementY = 0.1;
+    // }
+    // this.camera.position.y = (this.camera.position.y + this.movementY);
 
-    this.camera.lookAt(0, 0, 0);
+    // this.camera.lookAt(0, 0, 0);
+
+    this.dice.rotation.x += 0.01;
+    this.dice.rotation.y += 0.01;
 
     this.renderer.render( this.scene, this.camera );
   }
 
-  createDice(material: THREE.Material, x: number, y: number, z: number): THREE.Group {
-    const circleMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
-    let circle;
-    let circleMesh;
-    const dice = new THREE.Group();
+  addCircle(posX: number, posY: number, posZ: number, rotation: number, rotationAxis: string, dice: THREE.Group) {
+    const circleMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+    const circle = new THREE.CircleGeometry( 0.1, 12 );
+    const circleMesh = new THREE.Mesh( circle, circleMaterial );
 
-    const geometry = new THREE.BoxGeometry( 3, 3, 3 );
+    circleMesh.rotation[rotationAxis] = rotation;
+    circleMesh.position.set(posX, posY, posZ);
+    circleMesh.castShadow = true;
+    circleMesh.receiveShadow = true;
+    dice.add(circleMesh);
+  }
+
+  createDice(material: THREE.Material): THREE.Group {
+    const dice = new THREE.Group();
+    const circleDispl = 0.25;
+    const faceDist = 0.51;
+
+    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
     const box = new THREE.Mesh( geometry, material );
+    box.castShadow = true;
+    box.receiveShadow = true;
     dice.add(box);
 
     // 1
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.position.set(0, 0, 1.51);
-    dice.add(circleMesh);
+    this.addCircle(0, 0, faceDist, 0, 'x', dice);
 
     // 2
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = Math.PI / 2;
-    circleMesh.position.set(1.51, 0.8, 0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = Math.PI / 2;
-    circleMesh.position.set(1.51, -0.8, -0.8);
-    dice.add(circleMesh);
+    this.addCircle(faceDist, circleDispl, circleDispl, Math.PI / 2, 'y', dice);
+    this.addCircle(faceDist, -circleDispl, -circleDispl, Math.PI / 2, 'y', dice);
 
     // 3
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.x = 3 * Math.PI / 2;
-    circleMesh.position.set( 0.8, 1.51, 0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.x = 3 * Math.PI / 2;
-    circleMesh.position.set(-0.8, 1.51, -0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.x = 3 * Math.PI / 2;
-    circleMesh.position.set(0, 1.51, 0);
-    dice.add(circleMesh);
+    this.addCircle( circleDispl, faceDist, circleDispl, 3 * Math.PI / 2, 'x', dice);
+    this.addCircle( -circleDispl, faceDist, -circleDispl, 3 * Math.PI / 2, 'x', dice);
+    this.addCircle( 0, faceDist, 0, 3 * Math.PI / 2, 'x', dice);
 
     // 4
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.x = Math.PI / 2;
-    circleMesh.position.set( 0.8, -1.51, 0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.x = Math.PI / 2;
-    circleMesh.position.set( -0.8, -1.51, -0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.x = Math.PI / 2;
-    circleMesh.position.set( 0.8, -1.51, -0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.x = Math.PI / 2;
-    circleMesh.position.set( -0.8, -1.51, 0.8);
-    dice.add(circleMesh);
+    this.addCircle( circleDispl, -faceDist, circleDispl, Math.PI / 2, 'x', dice);
+    this.addCircle( -circleDispl, -faceDist, circleDispl, Math.PI / 2, 'x', dice);
+    this.addCircle( circleDispl, -faceDist, -circleDispl, Math.PI / 2, 'x', dice);
+    this.addCircle( -circleDispl, -faceDist, -circleDispl, Math.PI / 2, 'x', dice);
 
     // 5
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = 3 * Math.PI / 2;
-    circleMesh.position.set(-1.51, 0.8, 0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = 3 * Math.PI / 2;
-    circleMesh.position.set(-1.51, -0.8, -0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = 3 * Math.PI / 2;
-    circleMesh.position.set(-1.51, -0.8, 0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = 3 * Math.PI / 2;
-    circleMesh.position.set(-1.51, 0.8, -0.8);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = 3 * Math.PI / 2;
-    circleMesh.position.set(-1.51, 0, 0);
-    dice.add(circleMesh);
+    this.addCircle(-faceDist, circleDispl, circleDispl, 3 * Math.PI / 2, 'y', dice);
+    this.addCircle(-faceDist, -circleDispl, circleDispl, 3 * Math.PI / 2, 'y', dice);
+    this.addCircle(-faceDist, circleDispl, -circleDispl, 3 * Math.PI / 2, 'y', dice);
+    this.addCircle(-faceDist, -circleDispl, -circleDispl, 3 * Math.PI / 2, 'y', dice);
+    this.addCircle(-faceDist, 0, 0, 3 * Math.PI / 2, 'y', dice);
 
     // 6
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = Math.PI;
-    circleMesh.position.set(0.8, 0.8, -1.51);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = Math.PI;
-    circleMesh.position.set(-0.8, 0.8, -1.51);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = Math.PI;
-    circleMesh.position.set(0, 0.8, -1.51);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = Math.PI;
-    circleMesh.position.set(0.8, -0.8, -1.51);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = Math.PI;
-    circleMesh.position.set(-0.8, -0.8, -1.51);
-    dice.add(circleMesh);
-    circle = new THREE.CircleGeometry( 0.35, 32 );
-    circleMesh = new THREE.Mesh( circle, circleMaterial );
-    circleMesh.rotation.y = Math.PI;
-    circleMesh.position.set(0, -0.8, -1.51);
-    dice.add(circleMesh);
+    this.addCircle(circleDispl, circleDispl, -faceDist, Math.PI, 'y', dice);
+    this.addCircle(0, circleDispl, -faceDist, Math.PI, 'y', dice);
+    this.addCircle(-circleDispl, circleDispl, -faceDist, Math.PI, 'y', dice);
+    this.addCircle(circleDispl, -circleDispl, -faceDist, Math.PI, 'y', dice);
+    this.addCircle(0, -circleDispl, -faceDist, Math.PI, 'y', dice);
+    this.addCircle(-circleDispl, -circleDispl, -faceDist, Math.PI, 'y', dice);
 
     return dice;
   }
