@@ -39,7 +39,7 @@ export class DiceFactory {
     dice.add(box);
 
     let diceColor = 0xffffff;
-    if (color === 0xffffff) {
+    if (color === 0xffffff || color === 0xe0e044) {
       diceColor = 0x000000;
     }
 

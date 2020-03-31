@@ -18,19 +18,19 @@ export class RollDicesComponent implements AfterViewInit {
     this.sceneService.addDice('red', 0xff4444);
     setTimeout(() => {
       this.sceneService.addDice('blue', 0x8888ff);
-    }, 1000);
+    }, 500);
     setTimeout(() => {
       this.sceneService.addDice('yellow', 0xe0e044);
-    }, 2000);
+    }, 1000);
     setTimeout(() => {
       this.sceneService.addDice('green', 0x00e044);
-    }, 3000);
+    }, 1500);
     setTimeout(() => {
       this.sceneService.addDice('white1', 0xffffff);
-    }, 4000);
+    }, 2000);
     setTimeout(() => {
       this.sceneService.addDice('white2', 0xffffff);
-    }, 5000);
+    }, 2500);
     this.sceneService.animate();
   }
 

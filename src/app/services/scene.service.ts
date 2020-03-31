@@ -23,7 +23,10 @@ export class SceneService {
   private lastTime: number;
   private time: number;
   private fixedTimeStep = 1.0 / 60.0;
-  private maxSubSteps = 3;
+  private maxSubSteps = 5;
+
+  private counts = [0, 0, 0, 0, 0, 0];
+  private totalCounts = 0;
 
   constructor() { }
 
@@ -42,7 +45,7 @@ export class SceneService {
 
     this.renderer.setSize( window.innerWidth, window.innerHeight );
 
-    this.camera.position.set(0, -1, 15);
+    this.camera.position.set(0, -5, 15);
     this.camera.lookAt(0, 0, 2);
   }
 
@@ -79,10 +82,17 @@ export class SceneService {
       dice.updateMesh();
     });
 
-    if (this.objects.reduce((finished, dice) => finished && dice.animationFinished, true)) {
+    if (this.objects.reduce((finished, dice) => finished && dice.animationFinished, true) && this.totalCounts < 1000) {
       this.objects.forEach(dice => {
-        // dice.setPosition(0, 0, Math.random() * 5 + 5);
+        this.counts[dice.getNumber() - 1]++;
+        dice.setPosition( Math.random() * 4 - 2,  Math.random() * 4 - 2, Math.random() * 5 + 5);
+        this.totalCounts++;
+        if (this.totalCounts % 10 === 0) {
+          console.log(this.totalCounts);
+        }
       });
+    } else if (this.totalCounts > 999) {
+      console.log(this.counts);
     }
   }
 }

@@ -21,7 +21,7 @@ export class Dice {
     this.mesh = diceAndFaces.dice;
     this.faces = diceAndFaces.faces;
     this.body = new CANNON.Body({
-      mass: 1,
+      mass: 10,
       shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1))
     });
     this.body.angularDamping = 0.3;
@@ -29,7 +29,10 @@ export class Dice {
 
   setPosition(x: number, y: number, z: number) {
     this.body.position.set(x, y, z);
-    this.body.angularVelocity.set(Math.random() * 5 + 3, Math.random() * 5 + 3, Math.random() * 5 + 3);
+    const randX = Math.random() > 0.5 ? Math.random() * 5 + 5 : Math.random() * (-5) - 5;
+    const randY = Math.random() > 0.5 ? Math.random() * 5 + 5 : Math.random() * (-5) - 5;
+    const randZ = Math.random() > 0.5 ? Math.random() * 5 + 5 : Math.random() * (-5) - 5;
+    this.body.angularVelocity.set(randX, randY, randZ);
     this.updateMesh();
     this.animationFinished = false;
   }
@@ -39,7 +42,7 @@ export class Dice {
       return;
     }
 
-    if (this.lastPosition && this.lastPosition.vsub(this.body.position).norm() < 0.0001) {
+    if (this.lastPosition && this.lastPosition.vsub(this.body.position).norm() < 0.001) {
       this.getNumber();
       this.animationFinished = true;
     }
@@ -74,7 +77,7 @@ export class Dice {
       return id;
     }, -1);
 
-    console.log(this.id, highestFace + 1);
+    // console.log(this.id, highestFace + 1);
     return highestFace + 1;
   }
 }

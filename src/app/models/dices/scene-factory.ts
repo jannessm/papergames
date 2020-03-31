@@ -21,6 +21,40 @@ export class SceneFactory {
     dirLight.shadow.camera.zoom = 2;
     scene.add( dirLight );
 
+    // let plane = new THREE.PlaneBufferGeometry(100, 100);
+    // let mat = new THREE.MeshBasicMaterial({color: 0x333333});
+    // let mesh = new THREE.Mesh(plane, mat);
+    // mesh.position.y = 5;
+    // mesh.position.z = 50;
+    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(1, 0, 0), Math.PI / 2);
+    // scene.add(mesh);
+
+    // plane = new THREE.PlaneBufferGeometry(100, 100);
+    // mat = new THREE.MeshBasicMaterial({color: 0x333333, side: THREE.DoubleSide});
+    // mesh = new THREE.Mesh(plane, mat);
+    // mesh.position.y = -5;
+    // mesh.position.z = 50;
+    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(1, 0, 0), Math.PI / 2);
+    // scene.add(mesh);
+
+    // plane = new THREE.PlaneBufferGeometry(100, 100);
+    // mat = new THREE.MeshBasicMaterial({color: 0x333333});
+    // mesh = new THREE.Mesh(plane, mat);
+    // mesh.position.x = -10;
+    // mesh.position.z = 50;
+    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(1, 0, 0), Math.PI / 2);
+    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(0, 1, 0), Math.PI / 2);
+    // scene.add(mesh);
+
+    // plane = new THREE.PlaneBufferGeometry(100, 100);
+    // mat = new THREE.MeshBasicMaterial({color: 0x333333, side: THREE.DoubleSide});
+    // mesh = new THREE.Mesh(plane, mat);
+    // mesh.position.x = 10;
+    // mesh.position.z = 50;
+    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(1, 0, 0), Math.PI / 2);
+    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(0, 1, 0), Math.PI / 2);
+    // scene.add(mesh);
+
     return scene;
   }
 
@@ -32,9 +66,44 @@ export class SceneFactory {
 
     const groundBody = new CANNON.Body({
       mass: 0,
-      shape: new CANNON.Plane()
+      shape: new CANNON.Box(new CANNON.Vec3(100, 100, 0.1)),
+      position: new CANNON.Vec3(0, 0, 0)
     });
     world.addBody(groundBody);
+
+    let plane = new CANNON.Body({
+      mass: 0,
+      shape: new CANNON.Plane()
+    });
+    plane.position.y = 5;
+    plane.quaternion.setFromAxisAngle( new CANNON.Vec3(1, 0, 0), Math.PI / 2);
+    world.addBody(plane);
+
+    plane = new CANNON.Body({
+      mass: 0,
+      shape: new CANNON.Plane()
+    });
+    plane.position.y = -5;
+    plane.quaternion.setFromAxisAngle( new CANNON.Vec3(-1, 0, 0), Math.PI / 2);
+    world.addBody(plane);
+
+    plane = new CANNON.Body({
+      mass: 0,
+      shape: new CANNON.Plane()
+    });
+    plane.position.x = -10;
+    plane.quaternion.setFromAxisAngle( new CANNON.Vec3(1, 0, 0), Math.PI / 2);
+    plane.quaternion.setFromAxisAngle( new CANNON.Vec3(0, 1, 0), Math.PI / 2);
+    world.addBody(plane);
+
+    plane = new CANNON.Body({
+      mass: 0,
+      shape: new CANNON.Plane()
+    });
+    plane.position.x = 10;
+    plane.quaternion.setFromAxisAngle( new CANNON.Vec3(-1, 0, 0), Math.PI / 2);
+    plane.quaternion.setFromAxisAngle( new CANNON.Vec3(0, -1, 0), Math.PI / 2);
+    world.addBody(plane);
 
     return world;
   }
