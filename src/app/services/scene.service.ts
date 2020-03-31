@@ -49,7 +49,6 @@ export class SceneService {
   addDice(id: string, color: number) {
     const dice = new Dice(id, color);
     dice.setPosition( Math.random() * 4 - 2,  Math.random() * 4 - 2, Math.random() * 5 + 5);
-    // dice.setPosition(0, 0, 2);
     this.objects.push(dice);
     this.scene.add(dice.mesh);
 
