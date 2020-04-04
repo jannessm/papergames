@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 
 import { SceneService } from 'src/app/services/scene.service';
 
@@ -11,27 +11,40 @@ export class RollDicesComponent implements AfterViewInit {
 
   @ViewChild('canvas') canvas: ElementRef;
 
-  constructor(private sceneService: SceneService) { }
+  @HostListener('window:resize', [])
+  onResize() {
+    this.sceneService.resetRendererSize();
+  }
+
+  constructor(private sceneService: SceneService) {
+    this.sceneService.results.subscribe(results => {
+      const ids = ['red', 'blue', 'yellow', 'green', 'white1', 'white2'];
+      let i = 0;
+      const interval = setInterval(() => {
+        // console.log(i);
+        this.sceneService.removeDice(ids[i]);
+        i += 1;
+      }, 300);
+      setTimeout(() => {
+        clearInterval(interval);
+        (this.canvas.nativeElement as HTMLElement).style.display = 'none';
+      }, 2100);
+    });
+  }
 
   ngAfterViewInit(): void {
+    const ids = ['red', 'blue', 'yellow', 'green', 'white1', 'white2'];
+    const colors = [0xff4444, 0x8888ff, 0xe0e044, 0x00e044, 0xffffff, 0xffffff];
     this.sceneService.setupScene(this.canvas);
-    this.sceneService.addDice('red', 0xff4444);
-    setTimeout(() => {
-      this.sceneService.addDice('blue', 0x8888ff);
-    }, 500);
-    setTimeout(() => {
-      this.sceneService.addDice('yellow', 0xe0e044);
-    }, 1000);
-    setTimeout(() => {
-      this.sceneService.addDice('green', 0x00e044);
-    }, 1500);
-    setTimeout(() => {
-      this.sceneService.addDice('white1', 0xffffff);
-    }, 2000);
-    setTimeout(() => {
-      this.sceneService.addDice('white2', 0xffffff);
-    }, 2500);
+    this.sceneService.addDice(ids[0], colors[0]);
+    let i = 1;
+    const interval = setInterval(() => {
+      this.sceneService.addDice(ids[i], colors[i]);
+      i++;
+    }, 300);
+    setTimeout(() => clearInterval(interval), 1500);
     this.sceneService.animate();
+
   }
 
 }

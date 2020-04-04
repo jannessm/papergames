@@ -19,20 +19,41 @@ export class Dice {
 
     const diceAndFaces = DiceFactory.createDice(color);
     this.mesh = diceAndFaces.dice;
+    this.mesh.name = id;
     this.faces = diceAndFaces.faces;
     this.body = new CANNON.Body({
-      mass: 10,
-      shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1))
+      mass: 100,
+      shape: new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5))
     });
-    this.body.angularDamping = 0.3;
+    this.body.angularDamping = 0.5;
   }
 
-  setPosition(x: number, y: number, z: number) {
-    this.body.position.set(x, y, z);
+  reset() {
+    this.body.position.set(Math.random() * 10 - 5,  Math.random() * 10 - 5, Math.random() * 5 + 5);
+
+    // random start position
+    const initScore = Math.ceil(Math.random() * 6);
+    // 1 do nothing
+    if (initScore === 2) {
+      this.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), Math.PI / 2);
+      this.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 2), Math.PI / 2);
+    } else if (initScore === 3) {
+      this.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), Math.PI / 2);
+      this.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI / 2);
+    } else if (initScore === 4) {
+      this.body.quaternion.setFromAxisAngle(new CANNON.Vec3(3, 0, 0), Math.PI / 2);
+    } else if (initScore === 5) {
+      this.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), Math.PI / 2);
+    } else if (initScore === 6) {
+      this.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 2, 0), Math.PI / 2);
+    }
+
+    // random angular speed
     const randX = Math.random() > 0.5 ? Math.random() * 5 + 5 : Math.random() * (-5) - 5;
     const randY = Math.random() > 0.5 ? Math.random() * 5 + 5 : Math.random() * (-5) - 5;
     const randZ = Math.random() > 0.5 ? Math.random() * 5 + 5 : Math.random() * (-5) - 5;
     this.body.angularVelocity.set(randX, randY, randZ);
+
     this.updateMesh();
     this.animationFinished = false;
   }
@@ -42,8 +63,7 @@ export class Dice {
       return;
     }
 
-    if (this.lastPosition && this.lastPosition.vsub(this.body.position).norm() < 0.001) {
-      this.getNumber();
+    if (this.lastPosition && this.lastPosition.vsub(this.body.position).norm() < 0.0001) {
       this.animationFinished = true;
     }
 
@@ -77,7 +97,6 @@ export class Dice {
       return id;
     }, -1);
 
-    // console.log(this.id, highestFace + 1);
     return highestFace + 1;
   }
 }

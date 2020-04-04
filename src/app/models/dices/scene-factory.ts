@@ -18,42 +18,29 @@ export class SceneFactory {
     const dirLight = new THREE.DirectionalLight();
     dirLight.position.set( 0, 5, 5 );
     dirLight.castShadow = true;
-    dirLight.shadow.camera.zoom = 2;
+    dirLight.shadow.camera.near = 0.1;
+    dirLight.shadow.camera.far = 500;
+    dirLight.shadow.camera.right = 10;
+    dirLight.shadow.camera.left = - 10;
+    dirLight.shadow.camera.top	= 10;
+    dirLight.shadow.camera.bottom = - 10;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.radius = 4;
     scene.add( dirLight );
 
-    // let plane = new THREE.PlaneBufferGeometry(100, 100);
-    // let mat = new THREE.MeshBasicMaterial({color: 0x333333});
-    // let mesh = new THREE.Mesh(plane, mat);
-    // mesh.position.y = 5;
-    // mesh.position.z = 50;
-    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(1, 0, 0), Math.PI / 2);
-    // scene.add(mesh);
+    const geometry = new THREE.PlaneBufferGeometry( 2000, 2000 );
+    const material = new THREE.MeshPhongMaterial( {
+      color: 0x666666,
+      opacity: 0.3
+    } );
 
-    // plane = new THREE.PlaneBufferGeometry(100, 100);
-    // mat = new THREE.MeshBasicMaterial({color: 0x333333, side: THREE.DoubleSide});
-    // mesh = new THREE.Mesh(plane, mat);
-    // mesh.position.y = -5;
-    // mesh.position.z = 50;
-    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(1, 0, 0), Math.PI / 2);
-    // scene.add(mesh);
-
-    // plane = new THREE.PlaneBufferGeometry(100, 100);
-    // mat = new THREE.MeshBasicMaterial({color: 0x333333});
-    // mesh = new THREE.Mesh(plane, mat);
-    // mesh.position.x = -10;
-    // mesh.position.z = 50;
-    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(1, 0, 0), Math.PI / 2);
-    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    // scene.add(mesh);
-
-    // plane = new THREE.PlaneBufferGeometry(100, 100);
-    // mat = new THREE.MeshBasicMaterial({color: 0x333333, side: THREE.DoubleSide});
-    // mesh = new THREE.Mesh(plane, mat);
-    // mesh.position.x = 10;
-    // mesh.position.z = 50;
-    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(1, 0, 0), Math.PI / 2);
-    // mesh.quaternion.setFromAxisAngle( new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    // scene.add(mesh);
+    const ground = new THREE.Mesh( geometry, material );
+    ground.position.set(0, 0, 0.1);
+    ground.castShadow = true;
+    ground.receiveShadow = true;
+    ground.name = 'ground';
+    scene.add( ground );
 
     return scene;
   }
@@ -67,7 +54,7 @@ export class SceneFactory {
     const groundBody = new CANNON.Body({
       mass: 0,
       shape: new CANNON.Box(new CANNON.Vec3(100, 100, 0.1)),
-      position: new CANNON.Vec3(0, 0, 0)
+      position: new CANNON.Vec3(0, 0, -0.1)
     });
     world.addBody(groundBody);
 

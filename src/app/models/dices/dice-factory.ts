@@ -32,7 +32,10 @@ export class DiceFactory {
     const faces: THREE.Mesh[] = [];
 
     const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshPhongMaterial( { color } );
+    const material = new THREE.MeshPhongMaterial( {
+      color,
+      specular: 0x222222
+    } );
     const box = new THREE.Mesh( geometry, material );
     box.castShadow = true;
     box.receiveShadow = true;
