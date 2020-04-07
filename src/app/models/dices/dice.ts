@@ -29,7 +29,7 @@ export class Dice {
   }
 
   reset() {
-    this.body.position.set(Math.random() * 10 - 5,  Math.random() * 10 - 5, Math.random() * 5 + 5);
+    this.body.position.set(Math.random() * 8 - 4,  Math.random() * 8 - 4, 5);
 
     // random start position
     const initScore = Math.ceil(Math.random() * 6);
