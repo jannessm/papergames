@@ -36,9 +36,10 @@ export class QwixxComponent implements OnDestroy {
     this.settings.newGame.pipe(takeUntil(this.ngUnsubscribe)).subscribe(newConfig => {
       this.rows = newConfig;
       this.scores = [0, 0, 0, 0, 0];
+      this.dicesResults = [];
     });
 
-    this.sceneService.results.subscribe(results => {
+    this.sceneService.results.pipe(takeUntil(this.ngUnsubscribe)).subscribe(results => {
       const ids = this.getCurrentDiceColors();
       let i = 0;
       const interval = setInterval(() => {
