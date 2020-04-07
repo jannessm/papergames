@@ -55,7 +55,7 @@ export class QwixxComponent implements OnDestroy {
           clearInterval(interval);
           this.dicesComponent.doNotShow = true;
         }
-      }, 300);
+      }, 200);
     });
   }
 

@@ -36,7 +36,7 @@ export class RollDicesComponent implements AfterViewInit {
       if (i === diceIds.length) {
         clearInterval(interval);
       }
-    }, 300);
+    }, 100);
 
     this.sceneService.animate();
   }
