@@ -25,7 +25,7 @@
       <app-qwixx-failed (score)="scores[4] = $event" class="qwixx-half-line"></app-qwixx-failed>
 
       <div id="dices" class="qwixx-half-line">
-        <button mat-flat-button color="primary" (click)="rollDices()">Würfeln</button>
+        <div (click)="rollDices()">GO!</div>
         <app-qwixx-dice 
           *ngFor="let dice of dicesResults"
           [points]="dice.points"

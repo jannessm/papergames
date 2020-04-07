@@ -63,7 +63,7 @@ export class Dice {
       return;
     }
 
-    if (this.lastPosition && this.lastPosition.vsub(this.body.position).norm() < 0.0001) {
+    if (this.lastPosition && this.lastPosition.vsub(this.body.position).norm() < 0.0004) {
       this.animationFinished = true;
     }
 

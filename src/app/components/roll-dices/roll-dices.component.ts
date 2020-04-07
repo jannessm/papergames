@@ -14,6 +14,7 @@ export class RollDicesComponent implements AfterViewInit {
   doNotShow = true;
 
   @HostListener('window:resize', [])
+  @HostListener('window:orientationchange', [])
   onResize() {
     this.sceneService.resetRendererSize();
   }
@@ -27,12 +28,16 @@ export class RollDicesComponent implements AfterViewInit {
 
   rollDices(diceIds: string[], colors: number[]) {
     this.sceneService.addDice(diceIds[0], colors[0]);
+
     let i = 1;
     const interval = setInterval(() => {
       this.sceneService.addDice(diceIds[i], colors[i]);
       i++;
+      if (i === diceIds.length) {
+        clearInterval(interval);
+      }
     }, 300);
-    setTimeout(() => clearInterval(interval), 300 * (diceIds.length - 1));
+
     this.sceneService.animate();
   }
 

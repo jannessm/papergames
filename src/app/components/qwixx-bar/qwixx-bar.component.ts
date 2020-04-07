@@ -34,9 +34,13 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private settingsService: QwixxSettingsService) {
-    this.settingsService.newGame.pipe(takeUntil(this.ngUnsubscribe)).subscribe(layout => {
+    this.settingsService.newGame.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.marked = Array(12).fill(false);
       this.lastMarked = -1;
+      this.closed = false;
+      this.unicolor = !!this.colors.reduce((lastColor, color) => {
+        return lastColor !== color ? undefined : color;
+      }, this.colors[0]);
       this.recalculateScore();
     });
   }

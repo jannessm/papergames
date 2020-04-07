@@ -4,10 +4,10 @@
     "name": "Jannes Magnusson",
     "email": "jannes@magnusson.berlin"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host=0.0.0.0",
     "build": "ng build",
     "build-prod": "rm -rf dist && ng build --prod --aot",
     "test": "ng test",

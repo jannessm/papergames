@@ -41,6 +41,7 @@ export class QwixxComponent implements OnDestroy {
 
     this.sceneService.results.pipe(takeUntil(this.ngUnsubscribe)).subscribe(results => {
       const ids = this.getCurrentDiceColors();
+
       let i = 0;
       const interval = setInterval(() => {
         this.sceneService.removeDice(ids[i]);
@@ -48,13 +49,13 @@ export class QwixxComponent implements OnDestroy {
           points: results[ids[i]],
           color: ids[i].replace(/\d*/g, '')
         });
-        i += 1;
-      }, 300);
+        i++;
 
-      setTimeout(() => {
-        clearInterval(interval);
-        this.dicesComponent.doNotShow = true;
-      }, 300 * ids.length);
+        if (i === ids.length) {
+          clearInterval(interval);
+          this.dicesComponent.doNotShow = true;
+        }
+      }, 300);
     });
   }
 
