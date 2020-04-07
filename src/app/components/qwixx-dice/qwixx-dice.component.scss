@@ -1,0 +1,143 @@
+.dice {
+  position: relative;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+
+  &.white {
+    border: 1px solid grey;
+  }
+
+  div {
+    position: absolute;
+    border-radius: 50%;
+    width: 20%;
+    height: 20%;
+  }
+
+  &.red div,
+  &.blue div,
+  &.green div {
+    background: white;
+  }
+
+  &.yellow div,
+  &.white div {
+    background: black;
+  }
+
+  &.one div {
+    top: 40%;
+    left: 40%;
+  }
+
+  &.two div {
+    &:nth-child(1) {
+      top: 12.5%;
+      right: 12.5%;
+    }
+
+    &:nth-child(2) {
+      bottom: 12.5%;
+      left: 12.5%;
+    }
+  }
+
+  &.three div {
+    &:nth-child(1) {
+      top: 12.5%;
+      right: 12.5%;
+    }
+
+    &:nth-child(2) {
+      bottom: 12.5%;
+      left: 12.5%;
+    }
+
+    &:nth-child(3) {
+      top: 40%;
+      left: 40%;
+    }
+  }
+
+  &.four div {
+    &:nth-child(1) {
+      top: 12.5%;
+      right: 12.5%;
+    }
+
+    &:nth-child(2) {
+      bottom: 12.5%;
+      left: 12.5%;
+    }
+
+    &:nth-child(3) {
+      top: 12.5%;
+      left: 12.5%;
+    }
+
+    &:nth-child(4) {
+      bottom: 12.5%;
+      right: 12.5%;
+    }
+  }
+
+  &.five div {
+    &:nth-child(1) {
+      top: 12.5%;
+      right: 12.5%;
+    }
+
+    &:nth-child(2) {
+      bottom: 12.5%;
+      left: 12.5%;
+    }
+
+    &:nth-child(3) {
+      top: 12.5%;
+      left: 12.5%;
+    }
+
+    &:nth-child(4) {
+      bottom: 12.5%;
+      right: 12.5%;
+    }
+
+    &:nth-child(5) {
+      top: 40%;
+      left: 40%;
+    }
+  }
+
+  &.six div {
+    &:nth-child(1) {
+      top: 12.5%;
+      right: 12.5%;
+    }
+
+    &:nth-child(2) {
+      bottom: 12.5%;
+      left: 12.5%;
+    }
+
+    &:nth-child(3) {
+      top: 12.5%;
+      left: 12.5%;
+    }
+
+    &:nth-child(4) {
+      bottom: 12.5%;
+      right: 12.5%;
+    }
+
+    &:nth-child(5) {
+      top: 40%;
+      left: 12.5%;
+    }
+
+    &:nth-child(6) {
+      top: 40%;
+      right: 12.5%;
+    }
+  }
+}

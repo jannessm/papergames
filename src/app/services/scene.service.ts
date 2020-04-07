@@ -52,6 +52,8 @@ export class SceneService {
   }
 
   addDice(id: string, color: number) {
+    console.log('add', id, color);
+    this.paused = false;
     const dice = new Dice(id, color);
     dice.reset();
     this.objects.push(dice);
@@ -93,7 +95,7 @@ export class SceneService {
 
     const diceFinished = this.objects.reduce((finished, dice) => finished && dice.animationFinished, true);
 
-    if (diceFinished) {
+    if (diceFinished && !this.paused) {
       this.paused = true;
       this.results.emit(
         this.objects.reduce((res, dice) => {

@@ -1,5 +1,5 @@
 <div id="doc">
-  <app-roll-dices></app-roll-dices>
+  <app-roll-dices #dices></app-roll-dices>
   <div id="menu" (click)="sidenav.toggle(); notfirstopen = true;">
     <div id="menu1" [class.open1]="open" [class.closed1]="!open && notfirstopen"></div>
     <div id="menu2" [class.open2]="open" [class.closed2]="!open && notfirstopen"></div>
@@ -19,9 +19,18 @@
         [cookieId]="'qwixx-row-'+i"
         (score)="scores[i] = $event"
         class="qwixx-line"
+        #qwixxBar
       ></app-qwixx-bar>
       
-      <app-qwixx-failed (score)="scores[4] = $event" class="qwixx-line"></app-qwixx-failed>
+      <app-qwixx-failed (score)="scores[4] = $event" class="qwixx-half-line"></app-qwixx-failed>
+
+      <div id="dices" class="qwixx-half-line">
+        <button mat-flat-button color="primary" (click)="rollDices()">Würfeln</button>
+        <app-qwixx-dice 
+          *ngFor="let dice of dicesResults"
+          [points]="dice.points"
+          [color]="dice.color"></app-qwixx-dice>
+      </div>
       
       <div id="scoreboard" class="qwixx-line">
         <div class="score red-b border">{{scores[0]}}</div>

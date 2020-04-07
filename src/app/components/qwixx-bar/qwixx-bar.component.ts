@@ -27,6 +27,9 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
   marked: boolean[] = Array(12).fill(false);
   lastMarked = -1;
 
+  public closed = false;
+  public unicolor = true;
+
   private checked = 0;
   private ngUnsubscribe = new Subject<void>();
 
@@ -74,6 +77,14 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
       this.colors = cookie.rowConfig.colors;
       this.labels = cookie.rowConfig.labels;
     }
+
+    // set values unicolor and closed according to cookie
+    this.unicolor = !!this.colors.reduce((lastColor, color) => {
+      return lastColor !== color ? undefined : color;
+    }, this.colors[0]);
+    if (this.lastMarked === CLOSED) {
+      this.closed = true;
+    }
     this.recalculateScore();
   }
 
@@ -103,10 +114,12 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
 
     // closed row without checked 12
     } else if (index === 11 && this.lastMarked === CLOSED && !this.marked[11]) {
+      this.closed = false;
       this.lastMarked = penultimate;
 
     // closed row with checked 12
     } else if (index >= 10 && this.lastMarked === CLOSED) {
+      this.closed = false;
       this.lastMarked = penultimate;
       this.marked[10] = false;
       this.marked[11] = false;
@@ -126,6 +139,7 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
     // 12
     if (index === 10 && this.checked >= 5) {
       this.lastMarked = CLOSED;
+      this.closed = true;
       this.marked[index] = true;
       this.marked[index + 1] = true;
     }
@@ -133,6 +147,7 @@ export class QwixxBarComponent implements OnInit, OnDestroy {
     // X
     if (index === 11) {
       this.lastMarked = CLOSED;
+      this.closed = true;
     }
   }
 }

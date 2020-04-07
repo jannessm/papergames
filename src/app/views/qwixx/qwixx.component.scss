@@ -36,6 +36,53 @@ mat-sidenav-container {
   overflow: visible;
 }
 
+.qwixx-line, .qwixx-half-line {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  height: (90% / 6 - 4%);
+  margin: 2% 0;
+}
+.qwixx-half-line {
+  display: inline-block;
+  width: 50%;
+  margin: 0;
+}
+
+app-qwixx-failed, app-qwixx-dice {
+  display: inline-block;
+}
+
+#dices {
+  & * {
+    position: absolute;
+    height: 100%;
+    width: calc(100% / 6 - 2%);
+  }
+
+  & :nth-child(1) {
+    right: 1%;
+  }
+  & :nth-child(2) {
+    right: calc(100% / 6 + 1%);
+  }
+  & :nth-child(3) {
+    right: calc(200% / 6 + 1%);
+  }
+  & :nth-child(4) {
+    right: calc(300% / 6 + 1%);
+  }
+  & :nth-child(5) {
+    right: calc(400% / 6 + 1%);
+  }
+  & :nth-child(6) {
+    right: calc(500% / 6 + 1%);
+  }
+  & :nth-child(7) {
+    right: calc(600% / 6 + 1%);
+  }
+}
+
 #scoreboard {
   .border {
     border: 2px solid;

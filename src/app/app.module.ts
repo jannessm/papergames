@@ -17,6 +17,7 @@ import { QwixxSettingsService } from './services/qwixx-settings.service';
 import { CookieService } from 'ngx-cookie-service';
 import { RollDicesComponent } from './components/roll-dices/roll-dices.component';
 import { SceneService } from './services/scene.service';
+import { QwixxDiceComponent } from './components/qwixx-dice/qwixx-dice.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SceneService } from './services/scene.service';
     QwixxComponent,
     QwixxFailedComponent,
     QwixxMenuComponent,
-    RollDicesComponent
+    RollDicesComponent,
+    QwixxDiceComponent
   ],
   imports: [
     BrowserModule,
