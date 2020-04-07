@@ -33,61 +33,63 @@ export class DiceFactory {
 
     const geometry = new THREE.BoxGeometry( 1, 1, 1 );
     const material = new THREE.MeshPhongMaterial( {
-      color,
-      specular: 0x222222
+      color
     } );
     const box = new THREE.Mesh( geometry, material );
     box.castShadow = true;
     box.receiveShadow = true;
     dice.add(box);
 
-    let diceColor = 0xffffff;
+    let circleColor = 0xffffff;
     if (color === 0xffffff || color === 0xe0e044) {
-      diceColor = 0x000000;
+      circleColor = 0x000000;
     }
 
     // 1
-    faces.push(this.addCircle(0, 0, faceDist, 0, 'x', dice, diceColor));
+    faces.push(this.addCircle(0, 0, faceDist, 0, 'x', dice, circleColor));
 
     // 2
     faces.push(
-      this.addCircle(faceDist, circleDispl, circleDispl, Math.PI / 2, 'y', dice, diceColor)
+      this.addCircle(faceDist, 0, 0, Math.PI / 2, 'y', dice, color)
     );
-    this.addCircle(faceDist, -circleDispl, -circleDispl, Math.PI / 2, 'y', dice, diceColor);
+    this.addCircle(faceDist, circleDispl, circleDispl, Math.PI / 2, 'y', dice, circleColor);
+    this.addCircle(faceDist, -circleDispl, -circleDispl, Math.PI / 2, 'y', dice, circleColor);
 
     // 3
     faces.push(
-      this.addCircle( circleDispl, faceDist, circleDispl, 3 * Math.PI / 2, 'x', dice, diceColor)
+      this.addCircle( 0, faceDist, 0, 3 * Math.PI / 2, 'x', dice, circleColor)
     );
-    this.addCircle( -circleDispl, faceDist, -circleDispl, 3 * Math.PI / 2, 'x', dice, diceColor);
-    this.addCircle( 0, faceDist, 0, 3 * Math.PI / 2, 'x', dice, diceColor);
+    this.addCircle( circleDispl, faceDist, circleDispl, 3 * Math.PI / 2, 'x', dice, circleColor);
+    this.addCircle( -circleDispl, faceDist, -circleDispl, 3 * Math.PI / 2, 'x', dice, circleColor);
 
     // 4
     faces.push(
-      this.addCircle( circleDispl, -faceDist, circleDispl, Math.PI / 2, 'x', dice, diceColor)
+      this.addCircle( 0, -faceDist, 0, Math.PI / 2, 'x', dice, color)
     );
-    this.addCircle( -circleDispl, -faceDist, circleDispl, Math.PI / 2, 'x', dice, diceColor);
-    this.addCircle( circleDispl, -faceDist, -circleDispl, Math.PI / 2, 'x', dice, diceColor);
-    this.addCircle( -circleDispl, -faceDist, -circleDispl, Math.PI / 2, 'x', dice, diceColor);
+    this.addCircle( circleDispl, -faceDist, circleDispl, Math.PI / 2, 'x', dice, circleColor);
+    this.addCircle( -circleDispl, -faceDist, circleDispl, Math.PI / 2, 'x', dice, circleColor);
+    this.addCircle( circleDispl, -faceDist, -circleDispl, Math.PI / 2, 'x', dice, circleColor);
+    this.addCircle( -circleDispl, -faceDist, -circleDispl, Math.PI / 2, 'x', dice, circleColor);
 
     // 5
     faces.push(
-      this.addCircle(-faceDist, circleDispl, circleDispl, 3 * Math.PI / 2, 'y', dice, diceColor)
+      this.addCircle(-faceDist, 0, 0, 3 * Math.PI / 2, 'y', dice, circleColor)
     );
-    this.addCircle(-faceDist, -circleDispl, circleDispl, 3 * Math.PI / 2, 'y', dice, diceColor);
-    this.addCircle(-faceDist, circleDispl, -circleDispl, 3 * Math.PI / 2, 'y', dice, diceColor);
-    this.addCircle(-faceDist, -circleDispl, -circleDispl, 3 * Math.PI / 2, 'y', dice, diceColor);
-    this.addCircle(-faceDist, 0, 0, 3 * Math.PI / 2, 'y', dice, diceColor);
+    this.addCircle(-faceDist, -circleDispl, circleDispl, 3 * Math.PI / 2, 'y', dice, circleColor);
+    this.addCircle(-faceDist, circleDispl, -circleDispl, 3 * Math.PI / 2, 'y', dice, circleColor);
+    this.addCircle(-faceDist, circleDispl, circleDispl, 3 * Math.PI / 2, 'y', dice, circleColor);
+    this.addCircle(-faceDist, -circleDispl, -circleDispl, 3 * Math.PI / 2, 'y', dice, circleColor);
 
     // 6
     faces.push(
-      this.addCircle(circleDispl, circleDispl, -faceDist, Math.PI, 'y', dice, diceColor)
+      this.addCircle(0, 0, -faceDist, Math.PI, 'y', dice, color)
     );
-    this.addCircle(0, circleDispl, -faceDist, Math.PI, 'y', dice, diceColor);
-    this.addCircle(-circleDispl, circleDispl, -faceDist, Math.PI, 'y', dice, diceColor);
-    this.addCircle(circleDispl, -circleDispl, -faceDist, Math.PI, 'y', dice, diceColor);
-    this.addCircle(0, -circleDispl, -faceDist, Math.PI, 'y', dice, diceColor);
-    this.addCircle(-circleDispl, -circleDispl, -faceDist, Math.PI, 'y', dice, diceColor);
+    this.addCircle(circleDispl, circleDispl, -faceDist, Math.PI, 'y', dice, circleColor);
+    this.addCircle(0, circleDispl, -faceDist, Math.PI, 'y', dice, circleColor);
+    this.addCircle(-circleDispl, circleDispl, -faceDist, Math.PI, 'y', dice, circleColor);
+    this.addCircle(circleDispl, -circleDispl, -faceDist, Math.PI, 'y', dice, circleColor);
+    this.addCircle(0, -circleDispl, -faceDist, Math.PI, 'y', dice, circleColor);
+    this.addCircle(-circleDispl, -circleDispl, -faceDist, Math.PI, 'y', dice, circleColor);
 
     return {
       dice,

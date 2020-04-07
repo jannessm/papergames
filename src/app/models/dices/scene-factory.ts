@@ -49,12 +49,11 @@ export class SceneFactory {
     const world = new CANNON.World();
     world.gravity.set(0, 0, -9.82);
     world.broadphase = new CANNON.NaiveBroadphase();
-    world.solver.iterations = 10;
+    world.solver.iterations = 30;
 
     const groundBody = new CANNON.Body({
       mass: 0,
-      shape: new CANNON.Box(new CANNON.Vec3(100, 100, 0.1)),
-      position: new CANNON.Vec3(0, 0, -0.1)
+      shape: new CANNON.Plane(),
     });
     world.addBody(groundBody);
 

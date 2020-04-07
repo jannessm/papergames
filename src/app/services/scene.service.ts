@@ -52,7 +52,6 @@ export class SceneService {
   }
 
   addDice(id: string, color: number) {
-    console.log('add', id, color);
     this.paused = false;
     const dice = new Dice(id, color);
     dice.reset();
@@ -63,10 +62,14 @@ export class SceneService {
   }
 
   removeDice(id: string) {
-    this.scene.remove(this.scene.getObjectByName(id));
-    this.objects = this.objects.filter(dice => dice.id !== id);
-    this.updateObjects();
-    this.renderer.render( this.scene, this.camera );
+    const dice = this.objects.find(d => d.id === id);
+    if (dice) {
+      this.scene.remove(dice.mesh);
+      this.world.remove(dice.body);
+      this.objects = this.objects.filter(d => d.id !== id);
+      this.updateObjects();
+      this.renderer.render( this.scene, this.camera );
+    }
   }
 
   animate() {

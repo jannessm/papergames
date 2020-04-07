@@ -30,6 +30,7 @@ export class Dice {
 
   reset() {
     this.body.position.set(Math.random() * 8 - 4,  Math.random() * 8 - 4, 5);
+    this.body.velocity.set(0, 0, -5);
 
     // random start position
     const initScore = Math.ceil(Math.random() * 6);
@@ -63,7 +64,7 @@ export class Dice {
       return;
     }
 
-    if (this.lastPosition && this.lastPosition.vsub(this.body.position).norm() < 0.0004) {
+    if (this.lastPosition && this.lastPosition.vsub(this.body.position).norm() < 0.0001) {
       this.animationFinished = true;
     }
 
